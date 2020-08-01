@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+     This AWS CloudFormation stack will create the Security Groups:
+     AUTHOR: Venkat Yarlagadda
+Parameters:
+  SGName:
+         Description: SGName to create Security Group
+         Type: String
+  VPC:
+         Type: AWS::EC2::VPC::Id
+         Description: Choose which VPC the Classic Load Balancer should be deployed to
+  VPNSecurityGroup:
+         Description: Select the Security Group to access Load Balancer URL using VPN
+         Type: AWS::EC2::SecurityGroup::Id
+  AnsibleSecurityGroup:
+         Description: Select the Security Group to access the EC2 Instance from Ansible Server
+         Type: AWS::EC2::SecurityGroup::Id
+Resources:
+  SG:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref VPC
+      GroupDescription:  !Ref SGName
+      GroupName: !Ref SGName
+      SecurityGroupIngress:
+        -
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          SourceSecurityGroupId: !Ref VPNSecurityGroup
+        -
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          SourceSecurityGroupId: !Ref AnsibleSecurityGroup
+
+      Tags:
+        - Key: Name
+          Value: !Ref SGName
