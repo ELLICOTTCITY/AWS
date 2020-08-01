@@ -1,0 +1,25 @@
+VPC	
+	VPC Name =  VENKAT-VPC
+	IPV4 CIDR = 10.0.0.0/16
+
+SUBNETS
+    SUBNET Name = PUBLIC-SN1   ::Change autoassign public IPS --> Yes
+	IPV4 CIDR = 10.0.1.0/24 
+	
+    SUBNET Name = PRIVATE-SN1
+	IPV4 CIDR = 10.0.2.0/24
+
+INTERNET GW
+    Name =  VENKAT-IGW         :: Attach to VPC
+	  
+ROUTE TABLE
+    Default Route Table will be created along with VPC.
+    Create a public route table
+    Name = PUBLIC-VENKAT        :: Attach IGW	 	  
+
+SECURITY GROUP
+	Default will be created along with VPC
+
+NETWORK ACLs
+	Default will be created along with VPC
+
