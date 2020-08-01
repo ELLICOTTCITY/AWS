@@ -1,0 +1,250 @@
+#!/bin/bash
+
+################# Global ############################
+
+App=OPP
+Env=SAND
+SUB=0
+
+################# VPC ################################
+VPCID=vpc-0779fcbf983a94383
+################# Subnets ################################
+
+az2Management=subnet-06287d0026346ac28
+az2Dmz=subnet-0e8316774e884d661  
+az2Web=subnet-065d3f85a362d35d5  
+az2App=subnet-0a90d984df41d4906          
+az2Data=subnet-0c53a4802e3dc95c9 
+az2Transitive=subnet-01dadce9f8c7994f8  
+az1Management=subnet-0f0af0a445f01648c
+az1Dmz=subnet-0874a12335aa83929
+az1Web=subnet-08ea506370550c64b
+az1App=subnet-0280d1cd85c4c3a2b
+az1Data=subnet-0a0d557b1209e3463
+az1Transitive=subnet-046fdafe7ef0a1abc 
+
+################# Golden Image ID ########################
+
+#IMAGEGID=ami-0c72b87bd57527ecd
+IMAGEGID=ami-0d09f66821e751cfa
+#IMAGEGIDMWG=ami-0f9f3b207ec00f330
+IMAGEGIDMWG=ami-0f36da8681553d91c
+
+################# Security Groups ########################
+
+az1mgmtansible=sg-045646bb9fdf46347
+oppMzSand0JenkinsServerSG=sg-00c3c7f04943f4490
+oppsandboxvpnprivate=sg-0949a9dda76674889
+
+################# Key Pair ########################
+
+az1Ansible=opp-sandbox-az1-ansible
+az1Database=opp-sandbox-az1-database
+az1Datapower=opp-sandbox-az1-datapower
+az1Informatica=opp-sandbox-az1-informatica
+az1Junkins=opp-sandbox-az1-junkins
+az1Kube=opp-sandbox-az1-kube
+az1MacfeeGW=opp-sandbox-az1-mafee_gw
+az1Middleware=opp-sandbox-az1-middleware
+
+######## EC2 App Zone App Server1 Variables ##########
+
+STACKNAME=Sand0-AppWasMq1
+KEYVALUE=$az1Middleware
+INSTANCETYPE=r4.xlarge
+INSTANCENAME=Sand0-AppWasMq1
+EC2SUBNET=$az1App
+VOLGROUP2WASSIZE=75
+VOLGROUP3MQSIZE=25
+IMAGEID=$IMAGEGID
+SECURITYGROUPS=\"$oppsandboxvpnprivate,$oppAzSand0AppServerSG\" 
+
+echo "1.EC2 App Zone AppServer1"
+
+#aws cloudformation create-stack --stack-name $STACKNAME --template-body file://opp-AZ-WAS-MQ.yml --parameters ParameterKey=KeyName,ParameterValue=$KEYVALUE ParameterKey=InstanceType,ParameterValue=$INSTANCETYPE ParameterKey=SecurityGroupIds,ParameterValue=$SECURITYGROUPS ParameterKey=EC2Subnet,ParameterValue=$EC2SUBNET ParameterKey=InstanceName,ParameterValue=$INSTANCENAME ParameterKey=WasSize,ParameterValue=$VOLGROUP2WASSIZE ParameterKey=ImageId,ParameterValue=$IMAGEID ParameterKey=MQSize,ParameterValue=$VOLGROUP3MQSIZE
+
+
+######## EC2 App Zone App Server2 Variables ###########
+
+STACKNAME=Sand0-AppWasMq2
+KEYVALUE=$az1Middleware
+INSTANCETYPE=r4.xlarge
+INSTANCENAME=Sand0-AppWasMq2
+EC2SUBNET=$az1App
+VOLGROUP2WASSIZE=75
+VOLGROUP3MQSIZE=25
+IMAGEID=$IMAGEGID
+SECURITYGROUPS=\"$oppsandboxvpnprivate,$oppAzSand0AppServerSG\"
+
+echo "2.EC2 App Zone AppServer2"
+
+#aws cloudformation create-stack --stack-name $STACKNAME --template-body file://opp-AZ-WAS-MQ.yml --parameters ParameterKey=KeyName,ParameterValue=$KEYVALUE ParameterKey=InstanceType,ParameterValue=$INSTANCETYPE ParameterKey=SecurityGroupIds,ParameterValue=$SECURITYGROUPS ParameterKey=EC2Subnet,ParameterValue=$EC2SUBNET ParameterKey=InstanceName,ParameterValue=$INSTANCENAME ParameterKey=WasSize,ParameterValue=$VOLGROUP2WASSIZE ParameterKey=ImageId,ParameterValue=$IMAGEID ParameterKey=MQSize,ParameterValue=$VOLGROUP3MQSIZE
+
+
+###### EC2 Data Zone App Server1 Variables ############
+
+STACKNAME=Sand0-DataWasMq1
+KEYVALUE=$az1Middleware
+INSTANCETYPE=r4.2xlarge
+INSTANCENAME=Sand0-DataWasMq1
+EC2SUBNET=$az1Data 
+VOLGROUP2WASSIZE=75
+VOLGROUP3MQSIZE=25
+IMAGEID=$IMAGEGID
+SECURITYGROUPS=\"$oppsandboxvpnprivate,$oppDzSand0AppServerSG\"
+
+echo "3.EC2 Data Zone AppServer1"
+
+#aws cloudformation create-stack --stack-name $STACKNAME --template-body file://opp-DZ-WAS-MQ.yml --parameters ParameterKey=KeyName,ParameterValue=$KEYVALUE ParameterKey=InstanceType,ParameterValue=$INSTANCETYPE ParameterKey=SecurityGroupIds,ParameterValue=$SECURITYGROUPS ParameterKey=EC2Subnet,ParameterValue=$EC2SUBNET ParameterKey=InstanceName,ParameterValue=$INSTANCENAME ParameterKey=WasSize,ParameterValue=$VOLGROUP2WASSIZE ParameterKey=ImageId,ParameterValue=$IMAGEID ParameterKey=MQSize,ParameterValue=$VOLGROUP3MQSIZE
+
+###### EC2 Data Zone App Server2 Variables ############
+
+STACKNAME=Sand0-DataWasMq2
+KEYVALUE=$az1Middleware
+INSTANCETYPE=r4.2xlarge
+INSTANCENAME=Sand0-DataWasMq2
+EC2SUBNET=$az1Data
+VOLGROUP2WASSIZE=75
+VOLGROUP3MQSIZE=25
+IMAGEID=$IMAGEGID
+SECURITYGROUPS=\"$oppsandboxvpnprivate,$oppDzSand0AppServerSG\"
+
+echo "4.EC2 Data Zone AppServer2"
+
+#aws cloudformation create-stack --stack-name $STACKNAME --template-body file://opp-DZ-WAS-MQ.yml --parameters ParameterKey=KeyName,ParameterValue=$KEYVALUE ParameterKey=InstanceType,ParameterValue=$INSTANCETYPE ParameterKey=SecurityGroupIds,ParameterValue=$SECURITYGROUPS ParameterKey=EC2Subnet,ParameterValue=$EC2SUBNET ParameterKey=InstanceName,ParameterValue=$INSTANCENAME ParameterKey=WasSize,ParameterValue=$VOLGROUP2WASSIZE ParameterKey=ImageId,ParameterValue=$IMAGEID ParameterKey=MQSize,ParameterValue=$VOLGROUP3MQSIZE
+
+###### EC2 Data Zone Service Bus1 Variables ############
+
+STACKNAME=Sand0-DataIibMq1
+KEYVALUE=$az1Middleware
+INSTANCETYPE=m5a.large
+INSTANCENAME=Sand0-DataIibMq1
+EC2SUBNET=$az1Data
+VOLGROUP2IIBSIZE=20
+VOLGROUP3MQSIZE=25
+IMAGEID=$IMAGEGID
+SECURITYGROUPS=\"$oppsandboxvpnprivate,$oppAzSand0ServiceBusSG\"
+
+echo "5.EC2 Data Zone ServiceBus1"
+
+#aws cloudformation create-stack --stack-name $STACKNAME --template-body file://opp-IIB-MQ.yml --parameters ParameterKey=KeyName,ParameterValue=$KEYVALUE ParameterKey=InstanceType,ParameterValue=$INSTANCETYPE ParameterKey=SecurityGroupIds,ParameterValue=$SECURITYGROUPS ParameterKey=EC2Subnet,ParameterValue=$EC2SUBNET ParameterKey=InstanceName,ParameterValue=$INSTANCENAME ParameterKey=IibSize,ParameterValue=$VOLGROUP2IIBSIZE ParameterKey=ImageId,ParameterValue=$IMAGEID ParameterKey=MQSize,ParameterValue=$VOLGROUP3MQSIZE
+
+###### EC2 Data Zone Service Bus2 Variables ############
+
+STACKNAME=Sand0-DataIibMq2
+KEYVALUE=$az1Middleware
+INSTANCETYPE=m5a.large
+INSTANCENAME=Sand0-DataIibMq2
+EC2SUBNET=$az1Data
+VOLGROUP2IIBSIZE=20
+VOLGROUP3MQSIZE=25
+IMAGEID=$IMAGEGID
+SECURITYGROUPS=\"$oppsandboxvpnprivate,$oppAzSand0ServiceBusSG\"
+
+echo "6.EC2 Data Zone ServiceBus2"
+
+#aws cloudformation create-stack --stack-name $STACKNAME --template-body file://opp-IIB-MQ.yml --parameters ParameterKey=KeyName,ParameterValue=$KEYVALUE ParameterKey=InstanceType,ParameterValue=$INSTANCETYPE ParameterKey=SecurityGroupIds,ParameterValue=$SECURITYGROUPS ParameterKey=EC2Subnet,ParameterValue=$EC2SUBNET ParameterKey=InstanceName,ParameterValue=$INSTANCENAME ParameterKey=IibSize,ParameterValue=$VOLGROUP2IIBSIZE ParameterKey=ImageId,ParameterValue=$IMAGEID ParameterKey=MQSize,ParameterValue=$VOLGROUP3MQSIZE
+
+###### EC2 Data Zone Database1 Variables ############
+
+STACKNAME=Sand0-DataOracleDB1
+KEYVALUE=$az1Database
+INSTANCETYPE=r5.4xlarge
+INSTANCENAME=Sand0-DataOracleDB1
+EC2SUBNET=$az1Data
+VOLGROUP2DBU01SIZE=50
+VOLGROUP3DBBACkUPSIZE=100
+IMAGEID=$IMAGEGID
+SECURITYGROUPS=\"$oppsandboxvpnprivate,$oppDzSand0DataBase1SG\"
+
+echo "7.EC2 Data Zone DataBase1"
+
+#aws cloudformation create-stack --stack-name $STACKNAME --template-body file://opp-DB.yml --parameters ParameterKey=KeyName,ParameterValue=$KEYVALUE ParameterKey=InstanceType,ParameterValue=$INSTANCETYPE ParameterKey=SecurityGroupIds,ParameterValue=$SECURITYGROUPS ParameterKey=EC2Subnet,ParameterValue=$EC2SUBNET ParameterKey=InstanceName,ParameterValue=$INSTANCENAME ParameterKey=BackupSize,ParameterValue=$VOLGROUP2DBU01SIZE ParameterKey=ImageId,ParameterValue=$IMAGEID ParameterKey=U01Size,ParameterValue=$VOLGROUP3DBBACkUPSIZE
+
+###### EC2 Data Zone Database2 Variables ############
+
+STACKNAME=Sand0-DataOracleDB2
+KEYVALUE=$az1Database
+INSTANCETYPE=r5.4xlarge
+INSTANCENAME=Sand0-DataOracleDB2
+EC2SUBNET=$az1Data
+VOLGROUP2DBU01SIZE=50
+VOLGROUP3DBBACkUPSIZE=100
+IMAGEID=$IMAGEGID
+SECURITYGROUPS=\"$oppsandboxvpnprivate,$oppDzSand0DataBase1SG\"
+
+echo "8.EC2 Data Zone DataBase2"
+
+#aws cloudformation create-stack --stack-name $STACKNAME --template-body file://opp-DB.yml --parameters ParameterKey=KeyName,ParameterValue=$KEYVALUE ParameterKey=InstanceType,ParameterValue=$INSTANCETYPE ParameterKey=SecurityGroupIds,ParameterValue=$SECURITYGROUPS ParameterKey=EC2Subnet,ParameterValue=$EC2SUBNET ParameterKey=InstanceName,ParameterValue=$INSTANCENAME ParameterKey=BackupSize,ParameterValue=$VOLGROUP2DBU01SIZE ParameterKey=ImageId,ParameterValue=$IMAGEID ParameterKey=U01Size,ParameterValue=$VOLGROUP3DBBACkUPSIZE
+
+###### EC2 App Zone Anti Virus Scan GW  Variables ############
+
+STACKNAME=Sand0-AppAz1AppMacfeeGW
+KEYVALUE=$az1MacfeeGW
+INSTANCETYPE=m4.large
+INSTANCENAME=Sand0-AppMcafeeGW
+EC2SUBNET=$az1App
+IMAGEID=$IMAGEGIDMWG
+SECURITYGROUPS=\"$oppsandboxvpnprivate,$oppAzSand0AntivirusScanSG\"
+
+echo "9.EC2 App Zone AntiVirusScan GW"
+
+#aws cloudformation create-stack --stack-name $STACKNAME --template-body file://opp-MWG.yml --parameters ParameterKey=KeyName,ParameterValue=$KEYVALUE ParameterKey=InstanceType,ParameterValue=$INSTANCETYPE ParameterKey=SecurityGroupIds,ParameterValue=$SECURITYGROUPS ParameterKey=EC2Subnet,ParameterValue=$EC2SUBNET ParameterKey=InstanceName,ParameterValue=$INSTANCENAME ParameterKey=ImageId,ParameterValue=$IMAGEID 
+
+###### EC2 App Zone WebServices GW  Variables ############
+
+STACKNAME=Sand0-AppAz1DataPower
+KEYVALUE=$az1Datapower
+INSTANCETYPE=x1e.xlarge 
+INSTANCENAME=Sand0-AppDataPower
+EC2SUBNET=$az1App
+IMAGEID=$IMAGEGID
+SECURITYGROUPS=\"$oppsandboxvpnprivate,$oppAzSand0WebServicesSG\"
+
+echo "10.EC2 App Zone WebServices GW"
+
+#aws cloudformation create-stack --stack-name $STACKNAME --template-body file://opp-DataPower.yml --parameters ParameterKey=KeyName,ParameterValue=$KEYVALUE ParameterKey=InstanceType,ParameterValue=$INSTANCETYPE ParameterKey=SecurityGroupIds,ParameterValue=$SECURITYGROUPS ParameterKey=EC2Subnet,ParameterValue=$EC2SUBNET ParameterKey=InstanceName,ParameterValue=$INSTANCENAME ParameterKey=ImageId,ParameterValue=$IMAGEID
+
+###### EC2 Data Zone ETL  Variables ############
+
+STACKNAME=Sand0-DataAz1ETL
+KEYVALUE=$az1Informatica
+INSTANCETYPE=x1e.xlarge
+INSTANCENAME=Sand0-DataETL
+EC2SUBNET=$az1Data
+IMAGEID=$IMAGEGID
+VOLGROUP2OPPSIZE=75
+VOLGROUP3INFORMATICASIZE=25
+SECURITYGROUPS=\"$oppsandboxvpnprivate,$oppDZSand0ETLServerSG\"
+
+echo "11.EC2 ETL Server"
+
+#aws cloudformation create-stack --stack-name $STACKNAME --template-body file://opp-Informatica.yml --parameters ParameterKey=KeyName,ParameterValue=$KEYVALUE ParameterKey=InstanceType,ParameterValue=$INSTANCETYPE ParameterKey=SecurityGroupIds,ParameterValue=$SECURITYGROUPS ParameterKey=EC2Subnet,ParameterValue=$EC2SUBNET ParameterKey=InstanceName,ParameterValue=$INSTANCENAME ParameterKey=ImageId,ParameterValue=$IMAGEID ParameterKey=oppSize,ParameterValue=$VOLGROUP2OPPSIZE ParameterKey=informaticaSize,ParameterValue=$VOLGROUP3INFORMATICASIZE   
+
+###### EC2 Management  Zone Jenkins  Variables ############
+
+STACKNAME=Sand0-ManagemnetAz1Jenkins
+KEYVALUE=$az1Junkins
+INSTANCETYPE=m5.large
+INSTANCENAME=Sand0-MgmtJenkins
+EC2SUBNET=$az1Management
+IMAGEID=$IMAGEGID
+VOLGROUP2AppSizeSIZE=75
+SECURITYGROUPS=\"$oppsandboxvpnprivate,$oppMzSand0JenkinsServerSG\"
+
+echo "12.EC2 Jenkins Server"
+
+aws cloudformation create-stack --stack-name $STACKNAME --template-body file://opp-MZ-Jenkins.yml --parameters ParameterKey=KeyName,ParameterValue=$KEYVALUE ParameterKey=InstanceType,ParameterValue=$INSTANCETYPE ParameterKey=SecurityGroupIds,ParameterValue=$SECURITYGROUPS ParameterKey=EC2Subnet,ParameterValue=$EC2SUBNET ParameterKey=InstanceName,ParameterValue=$INSTANCENAME ParameterKey=ImageId,ParameterValue=$IMAGEID ParameterKey=AppSize,ParameterValue=$VOLGROUP2AppSizeSIZE
+
+###### EC2 App Zone Load Balancer ############
+
+STACKNAME=Sand0-ClassiciAzLB
+EnvironmentName=Sand0-ClassicAz1LB
+LoadBalancerName=Sand0-ClassicAz1LB
+SGName=oppAzSand0LoadBalancerSG
+VPC=$VPCID
+LBSubnets=$az1App
+
+echo "13.LB App Zone ClassicLB"
+
+#aws cloudformation create-stack --stack-name $STACKNAME --template-body file://opp-ClassicLB.yml --parameters ParameterKey=VPC,ParameterValue=$VPC ParameterKey=EnvironmentName,ParameterValue=$EnvironmentName ParameterKey=LoadBalancerName,ParameterValue=$LoadBalancerName ParameterKey=LBSubnets,ParameterValue=$LBSubnets ParameterKey=SGName,ParameterValue=$SGName
